@@ -122,6 +122,7 @@ data ProtocolType =
     | ProtocolType_Alert
     | ProtocolType_Handshake
     | ProtocolType_AppData
+    | ProtocolType_Heartbeat
     | ProtocolType_DeprecatedHandshake
     deriving (Eq, Show)
 
@@ -163,6 +164,7 @@ data Packet =
     | Alert [(AlertLevel, AlertDescription)]
     | ChangeCipherSpec
     | AppData ByteString
+    | Heartbeat ByteString
     deriving (Show,Eq)
 
 data Header = Header ProtocolType Version Word16 deriving (Show,Eq)
@@ -284,6 +286,7 @@ packetType (Handshake _)    = ProtocolType_Handshake
 packetType (Alert _)        = ProtocolType_Alert
 packetType ChangeCipherSpec = ProtocolType_ChangeCipherSpec
 packetType (AppData _)      = ProtocolType_AppData
+packetType (Heartbeat _)    = ProtocolType_Heartbeat
 
 typeOfHandshake :: Handshake -> HandshakeType
 typeOfHandshake (ClientHello {})             = HandshakeType_ClientHello
@@ -349,12 +352,14 @@ instance TypeValuable ProtocolType where
     valOfType ProtocolType_Alert               = 21
     valOfType ProtocolType_Handshake           = 22
     valOfType ProtocolType_AppData             = 23
+    valOfType ProtocolType_Heartbeat           = 24
     valOfType ProtocolType_DeprecatedHandshake = 128 -- unused
 
     valToType 20 = Just ProtocolType_ChangeCipherSpec
     valToType 21 = Just ProtocolType_Alert
     valToType 22 = Just ProtocolType_Handshake
     valToType 23 = Just ProtocolType_AppData
+    valToType 24 = Just ProtocolType_Heartbeat
     valToType _  = Nothing
 
 instance TypeValuable HandshakeType where

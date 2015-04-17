@@ -40,6 +40,7 @@ makeRecord pkt = do
         writePacketContent (Alert a)          = encodeAlerts a
         writePacketContent (ChangeCipherSpec) = encodeChangeCipherSpec
         writePacketContent (AppData x)        = x
+        writePacketContent (Heartbeat x)      = x
 
 -- | marshall packet data
 encodeRecord :: Record Ciphertext -> RecordM ByteString

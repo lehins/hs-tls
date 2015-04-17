@@ -34,6 +34,8 @@ processPacket :: Context -> Record Plaintext -> IO (Either TLSError Packet)
 
 processPacket _ (Record ProtocolType_AppData _ fragment) = return $ Right $ AppData $ toBytes fragment
 
+processPacket _ (Record ProtocolType_Heartbeat _ fragment) = return $ Right $ Heartbeat $ toBytes fragment
+
 processPacket _ (Record ProtocolType_Alert _ fragment) = return (Alert `fmapEither` (decodeAlerts $ toBytes fragment))
 
 processPacket ctx (Record ProtocolType_ChangeCipherSpec _ fragment) =

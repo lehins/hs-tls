@@ -100,8 +100,11 @@ recvData ctx = liftIO $ do
         -- when receiving empty appdata, we just retry to get some data.
         process (AppData "") = recvData ctx
         process (AppData x)  = return x
+        process (Heartbeat x) = return x
+        
         process p            = let reason = "unexpected message " ++ show p in
                                terminate (Error_Misc reason) AlertLevel_Fatal UnexpectedMessage reason
+
 
         terminate :: TLSError -> AlertLevel -> AlertDescription -> String -> IO a
         terminate err level desc reason = do

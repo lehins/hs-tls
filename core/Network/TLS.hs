@@ -25,6 +25,7 @@ module Network.TLS
     , HashAlgorithm(..)
     , SignatureAlgorithm(..)
     , CertificateType(..)
+    , Packet(..)
 
     -- * raw types
     , ProtocolType(..)
@@ -80,6 +81,9 @@ module Network.TLS
     , recvData
     , recvData'
 
+    -- * Low level API
+    , sendPacket
+      
     -- * Crypto Key
     , PubKey(..)
     , PrivKey(..)
@@ -115,7 +119,7 @@ import Network.TLS.Backend (Backend(..), HasBackend)
 import Network.TLS.Struct ( TLSError(..), TLSException(..)
                           , HashAndSignatureAlgorithm, HashAlgorithm(..), SignatureAlgorithm(..)
                           , Header(..), ProtocolType(..), CertificateType(..)
-                          , AlertDescription(..))
+                          , AlertDescription(..), Packet(..))
 import Network.TLS.Crypto (KxError(..))
 import Network.TLS.Cipher
 import Network.TLS.Hooks
